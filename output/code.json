@@ -1,0 +1,47 @@
+[
+   [
+      {
+         "block": "DIAMOND_BLOCK",
+         "path": [
+            0,
+            1
+         ],
+         "types": null,
+         "values": null
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            1
+         ],
+         "types": [
+            "VARIABLE",
+            "NUMBER",
+            "NUMBER"
+         ],
+         "values": [
+            "code_0",
+            90.0,
+            10.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            3
+         ],
+         "types": [
+            "VARIABLE",
+            "NUMBER",
+            "VARIABLE"
+         ],
+         "values": [
+            "anything",
+            100.0,
+            "code_1"
+         ]
+      }
+   ]
+]
