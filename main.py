@@ -4,3 +4,4 @@ from Parser import Parser
 lexer = Lexer("code.ml")
 parser = Parser(lexer)
 parser.parse()
+print("Done")

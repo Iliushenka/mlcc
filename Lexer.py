@@ -29,8 +29,26 @@ class Lexer:
             return self.tokenizeVariable(start_pos)
         elif self.peek(0) == "":
             return Token(Tokens.EOF, "EOF", start_pos, self.pos, self.filename)
+        elif char == "'" or char == '"':
+            return self.tokenizeString(start_pos)
         else:
             return self.tokenizeSimple(start_pos)
+
+    def tokenizeString(self, start_pos):
+        mode = self.peek(0)
+        token_value = ""
+        char = self.next()
+        skip = False
+        while (char != mode or skip is True) and char != "":
+            if char == "\\":
+                skip = True
+            else:
+                skip = False
+                token_value += char
+                char = self.next()
+        self.next()
+        return Token(Tokens.STRING, token_value, start_pos, self.pos + 1, self.filename)
+
 
     def skipComment(self):
         char = self.next()
@@ -44,7 +62,7 @@ class Lexer:
             token_value += char
             char = self.next()
         self.next()
-        token = Token(Tokens.VARIABLE, token_value, start_pos, self.pos, self.filename)
+        token = Token(Tokens.VARIABLE, token_value, start_pos, self.pos + 1, self.filename)
         return token
 
     def tokenizeNumber(self, start_pos):
@@ -55,7 +73,7 @@ class Lexer:
             char = self.next()
         try:
             token_value = float(token_value)
-            token = Token(Tokens.NUMBER, token_value, start_pos, self.pos, self.filename)
+            token = Token(Tokens.NUMBER, token_value, start_pos, self.pos + 1, self.filename)
             return token
         except ValueError:
             if token_value == "-":
@@ -110,11 +128,11 @@ class Lexer:
                 while char != ">" and char != "":
                     token_value += char
                     char = self.next()
-                token = Token(Tokens.EVENT, token_value, start_pos, self.pos, self.filename)
+                token = Token(Tokens.EVENT, token_value, start_pos, self.pos + 1, self.filename)
                 self.next()
                 return token
             else:
-                token = Token(Tokens.EVENT, "", start_pos, self.pos, self.filename)
+                token = Token(Tokens.EVENT, "", start_pos, self.pos + 1, self.filename)
                 error(token)
         elif token_type == "func":
             pass

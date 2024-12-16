@@ -18,3 +18,4 @@ class Tokens:
     ASSIGN: str = "ASSIGN"
     MINUS_ASSIGN: str = "MINUS_ASSIGN"
     PLUS_ASSIGN: str = "PLUS_ASSIGN"
+    STRING: str = "STRING"

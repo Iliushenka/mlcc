@@ -86,33 +86,37 @@ class Parser:
         expr = self.multiplicative()
         equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
         changes = 0
-        if self.token.match(Tokens.PLUS):
-            changes += 1
-            types, values = equal_type, equal_value
-            types += [expr.type]
-            values += [expr.value]
-            while self.token.match(Tokens.PLUS):
-                self.eat(Tokens.PLUS)
-                expr = self.multiplicative()
+        if expr.match(Tokens.STRING) is False:
+            if self.token.match(Tokens.PLUS):
+                changes += 1
+                types, values = equal_type, equal_value
                 types += [expr.type]
                 values += [expr.value]
-            self.add_block(Id.VARIABLE, get_path("plus"), types, values)
-            equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
-            expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
-        if self.token.match(Tokens.MINUS):
-            changes += 1
-            types, values = equal_type, equal_value
-            types += [expr.type]
-            values += [expr.value]
-            while self.token.match(Tokens.MINUS):
-                self.eat(Tokens.MINUS)
-                expr = self.multiplicative()
+                while self.token.match(Tokens.PLUS):
+                    self.eat(Tokens.PLUS)
+                    expr = self.multiplicative()
+                    types += [expr.type]
+                    values += [expr.value]
+                self.add_block(Id.VARIABLE, get_path("plus"), types, values)
+                equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
+                expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
+            if self.token.match(Tokens.MINUS):
+                changes += 1
+                types, values = equal_type, equal_value
                 types += [expr.type]
                 values += [expr.value]
-            self.add_block(Id.VARIABLE, get_path("minus"), types, values)
-            equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
-            expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
-        if changes == 0 and expr.type in (Tokens.NUMBER, Tokens.VARIABLE):
+                while self.token.match(Tokens.MINUS):
+                    self.eat(Tokens.MINUS)
+                    expr = self.multiplicative()
+                    types += [expr.type]
+                    values += [expr.value]
+                self.add_block(Id.VARIABLE, get_path("minus"), types, values)
+                equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
+                expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
+        else:
+            if self.token.match(Tokens.STAR, Tokens.SLASH, Tokens.PLUS, Tokens.MINUS):
+                error(self.token, "Нет операций сложения деления и так далее с типом String")
+        if changes == 0 and expr.type in (Tokens.NUMBER, Tokens.VARIABLE, Tokens.STRING):
             equal_type, equal_value = equal_type + [expr.type], equal_value + [expr.value]
             self.add_block(Id.VARIABLE, get_path("assign"), equal_type, equal_value)
         else:
@@ -121,39 +125,37 @@ class Parser:
 
     def multiplicative(self):
         expr = self.primary()
-        equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
-        if self.token.match(Tokens.STAR):
-            types, values = equal_type, equal_value
-            types += [expr.type]
-            values += [expr.value]
-            while self.token.match(Tokens.STAR):
-                self.eat(Tokens.STAR)
-                expr = self.primary()
+        if expr.match(Tokens.STRING) is False:
+            equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
+            if self.token.match(Tokens.STAR):
+                types, values = equal_type, equal_value
                 types += [expr.type]
                 values += [expr.value]
-            self.add_block(Id.VARIABLE, get_path("multiply"), types, values)
-            equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
-            expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
-        if self.token.match(Tokens.SLASH):
-            types, values = equal_type, equal_value
-            types += [expr.type]
-            values += [expr.value]
-            while self.token.match(Tokens.SLASH):
-                self.eat(Tokens.SLASH)
-                expr = self.primary()
+                while self.token.match(Tokens.STAR):
+                    self.eat(Tokens.STAR)
+                    expr = self.primary()
+                    types += [expr.type]
+                    values += [expr.value]
+                self.add_block(Id.VARIABLE, get_path("multiply"), types, values)
+                equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
+                expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
+            if self.token.match(Tokens.SLASH):
+                types, values = equal_type, equal_value
                 types += [expr.type]
                 values += [expr.value]
-            self.add_block(Id.VARIABLE, get_path("division"), types, values)
-            equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
-            expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
+                while self.token.match(Tokens.SLASH):
+                    self.eat(Tokens.SLASH)
+                    expr = self.primary()
+                    types += [expr.type]
+                    values += [expr.value]
+                self.add_block(Id.VARIABLE, get_path("division"), types, values)
+                equal_type, equal_value = [Tokens.VARIABLE], [self.unique]
+                expr = Token(equal_type[0], equal_value[0], -1, -1, self.filename)
         return expr
 
     def primary(self):
         token = self.token
-        if token.match(Tokens.VARIABLE):
-            self.next()
-            return token
-        elif token.match(Tokens.NUMBER):
+        if token.match(Tokens.VARIABLE, Tokens.NUMBER, Tokens.STRING):
             self.next()
             return token
         elif token.match(Tokens.LPARENT):
@@ -162,6 +164,7 @@ class Parser:
                 token = self.additive()
             self.eat(Tokens.RPARENT)
             return Token(token.type, token.value, -1, -1, self.filename)
+
 
     def eat(self, type):
         if self.token.match(type) is True:
