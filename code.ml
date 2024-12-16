@@ -1,3 +1,2 @@
-event<join> {
-    `anything` = 100 + 90 * 10
-}
+# сюда пишите свой код
+# пример смотреть в examples/example1.ml

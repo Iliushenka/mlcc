@@ -13,6 +13,23 @@
          "block": "IRON_BLOCK",
          "path": [
             1,
+            3
+         ],
+         "types": [
+            "VARIABLE",
+            "NUMBER",
+            "NUMBER"
+         ],
+         "values": [
+            "anything",
+            1.0,
+            1.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
             1
          ],
          "types": [
@@ -21,9 +38,9 @@
             "NUMBER"
          ],
          "values": [
-            "code_0",
-            90.0,
-            10.0
+            "code_1",
+            2.0,
+            2.0
          ]
       },
       {
@@ -38,9 +55,113 @@
             "VARIABLE"
          ],
          "values": [
-            "anything",
-            100.0,
+            "variable",
+            2.0,
             "code_1"
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            3
+         ],
+         "types": [
+            "VARIABLE",
+            "NUMBER",
+            "NUMBER"
+         ],
+         "values": [
+            "code_2",
+            2.0,
+            2.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            2
+         ],
+         "types": [
+            "VARIABLE",
+            "VARIABLE",
+            "NUMBER"
+         ],
+         "values": [
+            "code_3",
+            "code_2",
+            2.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            5
+         ],
+         "types": [
+            "VARIABLE",
+            "VARIABLE"
+         ],
+         "values": [
+            "another",
+            "code_3"
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            1
+         ],
+         "types": [
+            "VARIABLE",
+            "NUMBER",
+            "NUMBER",
+            "NUMBER",
+            "NUMBER"
+         ],
+         "values": [
+            "code_3",
+            2.0,
+            2.0,
+            2.0,
+            100.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            2
+         ],
+         "types": [
+            "VARIABLE",
+            "VARIABLE",
+            "NUMBER"
+         ],
+         "values": [
+            "code_3",
+            "code_3",
+            100.0
+         ]
+      },
+      {
+         "block": "IRON_BLOCK",
+         "path": [
+            1,
+            3
+         ],
+         "types": [
+            "VARIABLE",
+            "VARIABLE",
+            "NUMBER"
+         ],
+         "values": [
+            "star",
+            "code_3",
+            10.0
          ]
       }
    ]
